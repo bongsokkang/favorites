@@ -19,6 +19,19 @@ var PORT = 3000;
 var app = express();
 
 // Configure middleware
+var mongoose = require('mongoose');
+var databaseURI = 'mongodb://localhost/week18Populater';
+if (process.env.MONGODB_URI){
+  mongoose.connect(process.env.MONGODB_URI)
+}
+else {
+  mongoose.connect(databaseURI)
+}
+mongoose.Promise = global.Promise;
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
+
 
 // Use morgan logger for logging requests
 app.use(logger("dev"));
@@ -30,9 +43,9 @@ app.use(express.static("public"));
 // Set mongoose to leverage built in JavaScript ES6 Promises
 // Connect to the Mongo DB
 mongoose.Promise = Promise;
-mongoose.connect("mongodb://localhost/week18Populater", {
-  useMongoClient: true
-});
+// mongoose.connect("mongodb://localhost/week18Populater", {
+//   useMongoClient: true
+// });
 
 // Routes
 
